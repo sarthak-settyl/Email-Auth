@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }))
 
 async function sendmail(reciverMail, password) {
     // declare vars,
-    let fromMail = 'sb8377@srmist.edu.in';
+    let fromMail = 'Email';
     let toMail = reciverMail;
     let subject = 'Your secure password';
     let text = password;
@@ -36,7 +36,7 @@ async function sendmail(reciverMail, password) {
         service: 'gmail',
         auth: {
             user: fromMail,
-            pass: 'Sanjeev@5'
+            pass: 'email_password'
         }
     });
     // email options
