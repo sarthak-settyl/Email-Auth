@@ -137,7 +137,7 @@ app.post('/validateUser',async(req,res)=>{
         }
         console.log(String(user.isVerified));
         if(user.isVerified=='true'){
-            res.status(401).send("User alerady verified please signIn");
+            res.status(401).json(user);
             return;
         }
         var password = generator.generate({
