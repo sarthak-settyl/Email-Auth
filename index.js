@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }))
 
 async function sendmail(reciverMail, password) {
     // declare vars,
-    let fromMail = 'Email';
+    let fromMail = 'sb8377@srmist.edu.in';
     let toMail = reciverMail;
     let subject = 'Your secure password';
     let text = password;
@@ -36,7 +36,7 @@ async function sendmail(reciverMail, password) {
         service: 'gmail',
         auth: {
             user: fromMail,
-            pass: 'email_password'
+            pass: 'Sanjeev@5'
         }
     });
     // email options
@@ -135,6 +135,11 @@ app.post('/validateUser',async(req,res)=>{
         if(user===null){
             res.status(400).send("User Not Found");
         }
+        console.log(String(user.isVerified));
+        if(user.isVerified=='true'){
+            res.status(401).send("User alerady verified please signIn");
+            return;
+        }
         var password = generator.generate({
             length: 10,
             numbers: true
@@ -168,6 +173,7 @@ app.post('/verifypassword',async(req,res)=>{
         const user = await driver.findOne({"contactInfo.emailId":email });
     
         if (user && (await bcrypt.compare(password, user.password))) {
+            await user.updateOne({"isVerified":"true"})
           // Create token
           const token = jwt.sign(
             { user_id: user._id, email },
