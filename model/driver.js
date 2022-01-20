@@ -1,9 +1,18 @@
 const mongoose = require('mongoose');
 const modelSchema = new mongoose.Schema({
 	
+    "settings":{
+        "timeZone":{
+            "type":"String"
+        },
+        "language":{
+            "type":"String"
+        }
+    },
+
 	"driverId":{
         "type" :"String"
-    },
+    }, 
 	"status": {
         "type" :"String"
     },

@@ -209,6 +209,18 @@ app.post('/updatepassword',async(req,res)=>{
         res.status(200).json(user);
     }catch(err){}
 });
-app.listen(process.env.PORT || 5000, '0.0.0.0', () => {
+
+app.post('/updateTimeZone',async(req,res)=>{
+    try{
+        const { email, timeZone,language } = req.body;
+        const user = await driver.findOne({"contactInfo.emailId":email });
+        if(user===null){
+            res.status(400).send("User Not Found");
+        }
+        await user.updateOne({"settings":{"timeZone":timeZone,"language":language}})
+        res.status(200).json(user);
+    }catch(err){}
+});
+app.listen(process.env.PORT || 5500, '0.0.0.0', () => {
     console.log("Lisining at port 3000")
 })
