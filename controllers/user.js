@@ -3,6 +3,8 @@ const path = require('path')
 const app = express()
 const nodemailer = require("nodemailer");
 const generator = require('generate-password');
+const otpGenerator = require('otp-generator');
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -42,6 +44,14 @@ async function sendmail(reciverMail, password) {
     });
     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 }
+exports.verifyOtp = async(req,res)=>{
+    try{
+        const {hasedOtp,otp} = req.body;
+        if(await bcrypt.compare(otp, hasedOtp)){
+            res.sendStatus(200)
+        }
+    }catch(err){}
+};
 
 exports.validateUser = async(req,res)=>{
     try{
@@ -55,21 +65,24 @@ exports.validateUser = async(req,res)=>{
             res.status(401).json(user);
             return;
         }
-        var password = generator.generate({
-            length: 10,
-            numbers: true
-        });
-        sendmail(email, password);
+        // var otp = generator.generate({
+        //     length: 6,
+        //     numbers: true
+        // });
+        var otp = crypto.randomInt(10000,9999);
+        sendmail(email, otp);
+        let currrentTime = Date.now();
         // Validate user input
         //Encrypt user password
-        const encryptedPassword = await bcrypt.hash(password, 10);
-        await user.updateOne({"password":encryptedPassword})
-        if (!(email)) {
-            res.status(400).send("All input is required");
-        }
+        const encryptedPassword = await bcrypt.hash(otp, 6);
+        // await user.updateOne({"password":encryptedPassword})
+        // if (!(email)) {
+        //     res.status(400).send("All input is required");
+        // }
         console.log(user)
         console.log(email)
-        res.status(200).json(user);
+        const sendingotp = {encrypt:encryptedPassword};
+        res.status(200).json(sendingotp);
     }catch(err){
 
     }
