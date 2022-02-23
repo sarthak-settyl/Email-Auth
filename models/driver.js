@@ -9,6 +9,9 @@ const modelSchema = new mongoose.Schema({
             "type":"String"
         }
     },
+    "token":{
+        "type":"String"
+    },
 
 	"driverId":{
         "type" :"String"

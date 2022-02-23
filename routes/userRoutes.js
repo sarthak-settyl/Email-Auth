@@ -5,6 +5,7 @@ const {
     updatepassword, 
     updateTimeZone,
     verifyOtp, 
+    userAuthentication
     // createManyUsers
 } = require("../controllers/user");
 const router = express.Router();
@@ -18,5 +19,6 @@ router.post('/updatepassword',updatepassword);
 router.post('/updateTimeZone',updateTimeZone);
 
 router.post('/verifyOtp',verifyOtp);
+router.post('/userAuthentication',userAuthentication);
 module.exports = router;
 
