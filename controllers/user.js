@@ -130,9 +130,17 @@ exports.verifypassword = async (req,res) =>{
               expiresIn: "2h",
             }
           );
+          const accessToken = jwt.sign(
+            { user_id: user._id, email },
+            SETTYLJWTKEY,
+            {
+              expiresIn: "1500s",
+            }
+          );
     
           // save user token
           user.token = token;
+          user.accessToken = accessToken;
           let tokenJson = {token:token};
           const sendingData = Object.assign(tokenJson, user);
           console.log(token);

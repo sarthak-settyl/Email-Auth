@@ -12,6 +12,9 @@ const modelSchema = new mongoose.Schema({
     "token":{
         "type":"String"
     },
+    "accessToken":{
+        "type":"String"
+    },
 
 	"driverId":{
         "type" :"String"
